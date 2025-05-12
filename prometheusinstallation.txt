@@ -40,3 +40,7 @@ helm list -n prometheus
 Step5:
 
 kubectl get pods -n prometheus
+
+#if node exporter pod fails, run the patch
+kubectl patch -n prometheus ds prometheus-prometheus-node-exporter --type "json" -p "[{"op": "remove", "path" : "/spec/template/spec/containers/0/volumeMounts/2/mountPropagation"}]"
+
