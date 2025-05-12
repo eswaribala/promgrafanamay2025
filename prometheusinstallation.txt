@@ -10,3 +10,11 @@ Windows amd64 (hyperlink)
 #Check helm version
 
 helm version
+Step2
+#prometheus installation
+#check helm repository list
+
+helm repo list
+
+#Add repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
