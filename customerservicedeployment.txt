@@ -13,7 +13,7 @@ will see hash prompt
 # quit
 
 #deploy the application  
-kubectl apply -f deployment.yaml
+kubectl apply -f deployment-v17.yaml
 
 #check service
 kubectl get svc
