@@ -80,3 +80,5 @@ http://localhost:3000
 
 helm show values prometheus-community/prometheus > values.yaml
 
+#configure customer service , refer customerservicedeployment.txt, complete all the steps
+
