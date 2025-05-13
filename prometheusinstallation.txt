@@ -49,3 +49,11 @@ kubectl patch -n prometheus ds prometheus-prometheus-node-exporter --type "json"
 #navigate to the folder where the port-forward.sh present
 chmod 777 port-forward.sh
 ./port-forward.sh
+#minimize the bash script window
+#go to browser
+#open the following urls
+localhost:9090
+localhost:9091
+localhost:9100
+localhost:9093
+
