@@ -47,5 +47,5 @@ kubectl patch -n prometheus ds prometheus-prometheus-node-exporter --type "json"
 #to run prometheus server in localhost
 #open bash script in administrator mode
 #navigate to the folder where the port-forward.sh present
-chmod 777 ./port-forward.sh
+chmod 777 port-forward.sh
 ./port-forward.sh
