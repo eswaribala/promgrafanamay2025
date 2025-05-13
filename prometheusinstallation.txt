@@ -44,3 +44,8 @@ kubectl get pods -n prometheus
 #if node exporter pod fails, run the patch
 kubectl patch -n prometheus ds prometheus-prometheus-node-exporter --type "json" -p "[{"op": "remove", "path" : "/spec/template/spec/containers/0/volumeMounts/2/mountPropagation"}]"
 
+#to run prometheus server in localhost
+#open bash script in administrator mode
+#navigate to the folder where the port-forward.sh present
+chmod 777 ./port-forward.sh
+./port-forward.sh
