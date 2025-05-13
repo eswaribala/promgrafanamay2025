@@ -73,3 +73,10 @@ kubectl expose deployment --port 3000 my-grafana -n grafana --type=LoadBalancer 
 kubectl get secret --namespace grafana my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 #open browser to access grafana
 http://localhost:3000
+
+#download prometheus current configuration file
+#create new folder or download in promsetup folder
+#open new folder for prom configuration
+
+helm show values prometheus-community/prometheus > values.yaml
+
