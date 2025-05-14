@@ -10,6 +10,12 @@ Code starts with 2 like 200
 prometheus_http_requests_total{code=~"2.*", job="prometheus"}
 prometheus_http_requests_total{code=~"2.*|4.*"}
 ===========================================
+
+
+Multiple Queries
+{__name__=~"jvm_memory_used_bytes|process_cpu_usage"}
+
+==============================================
 Instance Vector
 Using an expression like some[6h] shows metrics from the last six hours for the series of some metrics.
 
