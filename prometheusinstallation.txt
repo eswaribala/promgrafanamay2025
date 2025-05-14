@@ -117,3 +117,16 @@ http://localhost:9182/metrics
 #after save changes, run the following 
 
 helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
+
+#go to python project folder
+
+#download custom exporter project
+kubectl apply -f deployment-python.yaml
+kubectl apply -f service-python.yaml
+
+#prometheus integration
+- job_name: 'pythoncustomexporter'
+        metrics_path: '/metrics'
+        static_configs:
+          - targets: ['host.docker.internal:9877']
+helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
