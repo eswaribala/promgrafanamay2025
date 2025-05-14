@@ -91,3 +91,13 @@ helm show values prometheus-community/prometheus > values.yaml
 
 helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
 
+#integrate to node exporter
+#add node exporter job to prometheus
+- job_name: 'node_exporter'
+        static_configs:
+          - targets: ['prometheus-prometheus-node-exporter:9100']
+
+#after save changes, run the following 
+
+helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
+
