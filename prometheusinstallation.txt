@@ -101,3 +101,19 @@ helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n promet
 
 helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
 
+#windows exporter
+#download windows amd exe file
+https://github.com/prometheus-community/windows_exporter/releases
+#execute exe file by clicking on more info and run anyway
+#access metrics from
+http://localhost:9182/metrics
+
+#modify values.yaml for windows exporter
+- job_name: 'windowsexporter'
+        metrics_path: '/metrics'
+        static_configs:
+          - targets: ['ipaddress:9182']
+
+#after save changes, run the following 
+
+helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
