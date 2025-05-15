@@ -1,0 +1,8 @@
+#download webhookdemo project
+#deploy js service
+#go to that folder
+cd <projectfoldername>
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl get pods
+kubectl get svc
