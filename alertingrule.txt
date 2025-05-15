@@ -10,3 +10,11 @@
            annotations:
              description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
              summary: 'Instance {{ $labels.instance }} down'
+         - alert: HighCPUUsage
+           expr: 100 * (1 - avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 90
+           for: 5m
+           labels:
+             severity: warning
+           annotations:
+             summary: "Instance {{ $labels.instance }} CPU usage is high"
+             description: "CPU usage on instance {{ $labels.instance }} has been above 90% for the last 5 minutes."
