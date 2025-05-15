@@ -21,6 +21,12 @@ alertmanager:
           group_wait: 1m
           group_interval: 10m
           repeat_interval: 1h
+        - match:
+            severity: warning
+          receiver: 'web-hook'
+          group_wait: 10s
+          group_interval: 1m
+          repeat_interval: 30m
         
 
 
@@ -46,4 +52,6 @@ alertmanager:
                  *Severity:* {{ .Labels.severity }}
                  *Source:* {{ .GeneratorURL }}
                {{ end }}  
-      
+       - name: 'web-hook'
+         webhook_configs:
+            - url: 'http://host.docker.internal:4000/webhook' 
