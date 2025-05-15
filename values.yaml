@@ -1335,7 +1335,7 @@ alertmanager:
      
       - name: 'slack-notifications'
         slack_configs:
-            - api_url: 'https://hooks.slack.com/services/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'
+            - api_url: ''
               channel: '#prometheuschannel'
               send_resolved: true
               title: "{{ .CommonLabels.alertname }} - {{ .Status }}"
