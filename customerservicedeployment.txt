@@ -30,3 +30,11 @@ http://localhost:7074/swagger-ui.html
 
 #expose postgres service
 kubectl expose deployment --port 5432 postgres --type=LoadBalancer --name=postgresservice
+
+#in case customer pod fails
+# check the log
+kubectl logs <customerpodname>
+#if failure due to database recreate database
+#delete the customer pod
+kubectl delete pod <customerpod>
+#after that automatically customer pod will be created
