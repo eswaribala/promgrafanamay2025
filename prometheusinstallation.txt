@@ -130,3 +130,58 @@ kubectl apply -f service-python.yaml
         static_configs:
           - targets: ['host.docker.internal:9877']
 helm upgrade prometheus prometheus-community/prometheus -f values.yaml -n prometheus
+
+#federation
+#create geographically separated
+kubectl create ns newyork
+kubectl create ns london
+helm install newyork-prometheus prometheus-community/prometheus -n newyork
+helm install london-prometheus prometheus-community/prometheus -n london
+#if node exporter goes to pending state due to non availability port, run the following
+#bash script
+#bash script
+ kubectl patch ds newyork-prometheus-prometheus-node-exporter -n newyork  --type='json' -p='[{"op": "replace", "path":"/spec/template/spec/containers/0/ports/0/containerPort", "value": 9101}]'
+
+#if node exporter fails
+kubectl patch -n newyork ds newyork-prometheus-prometheus-node-exporter --type "json" -p "[{"op": "remove", "path" : "/spec/template/spec/containers/0/volumeMounts/2/mountPropagation"}]"
+kubectl patch -n london ds london-prometheus-prometheus-node-exporter --type "json" -p "[{"op": "remove", "path" : "/spec/template/spec/containers/0/volumeMounts/2/mountPropagation"}]"
+ kubectl patch ds london-prometheus-prometheus-node-exporter -n london  --type='json' -p='[{"op": "replace", "path":"/spec/template/spec/containers/0/ports/0/containerPort", "value": 9102}]'
+
+
+#run prometheus in localhost
+kubectl port-forward svc/newyork-prometheus-server -n newyork 9096:80
+kubectl port-forward svc/london-prometheus-server -n london 9098:80
+
+#before helm upgrade
+kubectl edit ds london-prometheus-prometheus-node-exporter -n london
+change all the 9100 to 9102
+kubectl edit ds newyork-prometheus-prometheus-node-exporter -n newyork
+change all the 9100 to 9101
+
+#again run patch command for mounting
+
+#aggregation
+- job_name: 'global-view'
+        scrape_interval: 15s
+        honor_labels: true
+        metrics_path: '/federate'
+        params:
+         'match[]':
+           - '{__name__=~".+"}'  # Match all metrics, adjust as necessary
+        static_configs:
+          - targets: ['host.docker.internal:9080','host.docker.internal:9070']
+
+#aggregated alerting rules
+- alert: JobRequestRateSum
+           expr: sum(rate(http_server_requests_seconds_sum[24h])) by (outcome)
+           for: 2m
+           labels:
+             severity: critical
+           annotations:
+             summary: "Job Request {{ $labels.instance }} is not running"
+             description: "Job Request {{ $labels.instance }} has been down for the last 2 minutes."
+#aggregated query
+node_cpu_seconds_total{job="kubernetes-service-endpoints",instance="192.168.65.3:9100"}
+node_cpu_seconds_total{job="kubernetes-service-endpoints",instance="192.168.65.3:9101"}
+node_cpu_seconds_total{job="kubernetes-service-endpoints",instance="192.168.65.3:9102"}
+
